@@ -3,15 +3,27 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { getUserData } from "@/lib/actions/user"
+import { getSession, Session } from "@auth0/nextjs-auth0"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
-export default function SignUp() {
+export default async function SignUp() {
+	const { user } = (await getSession()) as Session;
+	if (user) {
+		const userData = await getUserData(user.sub as string);
+		if (userData.username) {
+			redirect('/profile')
+		} else {
+			redirect('/signup/new-user')
+		}
+	} else {
+		redirect('/api/auth/login')
+	}
+
 	return (
 		<section className="grid min-h-screen place-items-center">
 			<Card className="w-full max-w-sm">

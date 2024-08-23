@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
+import { NextRequest } from "next/server";
 
-export async function GET(req: Request) {
-	redirect('/signup');
+export async function GET(req: NextRequest) {
+	redirect(`/signup`);
 }
