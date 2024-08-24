@@ -69,6 +69,7 @@ export default function Component() {
 
 	const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
+			// @ts-ignore
 			setCampaign(prev => ({
 				...prev,
 				images: [...prev.images, ...Array.from(e.target.files as FileList)]

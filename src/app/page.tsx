@@ -3,7 +3,6 @@ import { getSession } from '@auth0/nextjs-auth0';
 
 export default async function Home() {
   const session = await getSession();
-
   return (
     <section className="grid min-h-screen place-items-center">
       <a href="/api/auth/login">Login</a>
