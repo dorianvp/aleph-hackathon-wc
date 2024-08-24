@@ -1,21 +1,17 @@
-'use client';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { getSession } from '@auth0/nextjs-auth0';
 
 
-export default function Home() {
-  const { user, error, isLoading } = useUser();
-  console.log(user, error, isLoading);
+export default async function Home() {
+  const session = await getSession();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
   return (
     <section className="grid min-h-screen place-items-center">
       <a href="/api/auth/login">Login</a>
       <a href="/api/auth/logout">Logout</a>
       {
-        user && (
+        session && (
           <div>
-            <h2>{user.sid as string}</h2>
+            <h2>{JSON.stringify(session.user, null, 2)}</h2>
           </div>
         )
       }
