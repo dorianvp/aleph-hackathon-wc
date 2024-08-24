@@ -1,30 +1,28 @@
 'use server'
 import { sql } from "@vercel/postgres";
+import { getManagementApiToken } from "./auth";
 
 export async function getUserData(sub: string) {
+	const managementApiToken = await getManagementApiToken();
+
+	console.log("sub", sub);
+
 	const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${sub}`, {
 		headers: {
-			'Authorization': `Bearer ${process.env.AUTH0_MANAGEMENT_API}`
+			'Authorization': `Bearer ${managementApiToken}`
 		}
 	});
 
+
 	if (!response.ok) {
-		console.log(response);
 		throw new Error(response.statusText)
 	}
 	const user = await response.json();
 	const dbUser = await sql`SELECT * FROM Users WHERE sub = ${sub}`;
 
-	const data = {
-		...user,
-		...dbUser.rows.map
-	}
-
-	console.log(dbUser);
-
 	return {
 		...user,
-		username: dbUser.rows[0].username
+		username: dbUser.rows.length > 0 ? dbUser.rows[0].username : ""
 	}
 }
 

@@ -1,11 +1,12 @@
+
 import { getUserData } from "@/lib/actions/user";
-import { getSession, Session } from "@auth0/nextjs-auth0";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { getSession } from "@auth0/nextjs-auth0";
 
 export default async function Profile() {
-	const { user } = (await getSession()) as Session;
+	const session = await getSession();
+	console.log("session", session);
 
-	const userData = await getUserData(user?.sub as string);
+	const userData = await getUserData(session?.user?.sub as string);
 
 	return (
 		<section>

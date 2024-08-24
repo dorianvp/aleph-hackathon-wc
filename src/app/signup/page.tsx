@@ -7,21 +7,24 @@ import {
 	CardTitle,
 } from "@/components/ui/card"
 import { getUserData } from "@/lib/actions/user"
-import { getSession, Session } from "@auth0/nextjs-auth0"
+import { getSession } from "@auth0/nextjs-auth0"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
 export default async function SignUp() {
-	const { user } = (await getSession()) as Session;
+	const user = await getSession();
+	console.log("HERE USER", user);
+
 	if (user) {
-		const userData = await getUserData(user.sub as string);
+		if (!user.accessToken) {
+			redirect('/api/auth/login')
+		}
+		const userData = await getUserData(user.user.sub as string);
 		if (userData.username) {
 			redirect('/profile')
 		} else {
 			redirect('/signup/new-user')
 		}
-	} else {
-		redirect('/api/auth/login')
 	}
 
 	return (

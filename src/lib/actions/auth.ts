@@ -14,11 +14,12 @@ export async function validUsername(username: string): Promise<boolean> {
 
 export async function createUser(username: string, sub: string) {
 	console.log("HELL YEAH");
+	const managementApiToken = await getManagementApiToken();
 
 	const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${sub}`, {
 		method: 'PATCH',
 		headers: {
-			'Authorization': `Bearer ${process.env.AUTH0_MANAGEMENT_API}`,
+			'Authorization': `Bearer ${managementApiToken}`,
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
@@ -37,4 +38,28 @@ export async function createUser(username: string, sub: string) {
 	}
 	const user = await response.json();
 	return user
+}
+
+export async function getManagementApiToken() {
+
+	const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			grant_type: 'client_credentials',
+			client_id: process.env.AUTH0_MACHINE_CLIENTID, // Your Auth0 client ID
+			client_secret: process.env.AUTH0_MACHINE_CLIENTSECRET, // Your Auth0 client secret
+			audience: `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/`,
+		}),
+	});
+
+	if (!response.ok) {
+		console.log(response);
+		throw new Error('Failed to obtain Management API token');
+	}
+
+	const data = await response.json();
+	return data.access_token;
 }
