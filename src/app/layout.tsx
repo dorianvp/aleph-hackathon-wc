@@ -8,8 +8,8 @@ import NextAuthProvider from "@/lib/providers/next-auth-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
-  description: "Hey there",
+  title: "Patronix",
+  description: "Fund your way to a bright future.",
 };
 
 export default function RootLayout({
