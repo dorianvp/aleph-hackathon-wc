@@ -42,8 +42,8 @@ export default function NewUser() {
 					</CardHeader>
 					<CardContent className="grid gap-4">
 						<Button className="w-full" onClick={() => {
-							// signIn()
-							router.push('/signup/new-user');
+							signIn()
+							// router.push('/signup/new-user');
 						}}>
 							Sign in with WorldID
 						</Button>
