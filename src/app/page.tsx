@@ -175,17 +175,17 @@ export default function Component() {
               <div className="flex flex-col items-center text-center">
                 <Gift className="h-12 w-12 mb-4 text-primary" />
                 <h3 className="text-lg md:text-xl font-bold mb-2">Choose a Campaign</h3>
-                <p className="text-sm md:text-base text-muted-foreground">Browse through our various campaigns and select a cause you're passionate about.</p>
+                <p className="text-sm md:text-base text-muted-foreground">Browse through our various campaigns and select a cause you&apos;re passionate about.</p>
               </div>
               <div className="flex flex-col items-center text-center">
                 <Users className="h-12 w-12 mb-4 text-primary" />
                 <h3 className="text-lg md:text-xl font-bold mb-2">Make a Donation</h3>
-                <p className="text-sm md:text-base text-muted-foreground">Contribute any amount you're comfortable with. Every donation, big or small, makes a difference.</p>
+                <p className="text-sm md:text-base text-muted-foreground">Contribute any amount you&apos;re comfortable with. Every donation, big or small, makes a difference.</p>
               </div>
               <div className="flex flex-col items-center text-center">
                 <BarChart className="h-12 w-12 mb-4 text-primary" />
                 <h3 className="text-lg md:text-xl font-bold mb-2">Track Your Impact</h3>
-                <p className="text-sm md:text-base text-muted-foreground">Follow the progress of the campaigns you've supported and see the real-world impact of your generosity.</p>
+                <p className="text-sm md:text-base text-muted-foreground">Follow the progress of the campaigns you&apos;ve supported and see the real-world impact of your generosity.</p>
               </div>
             </div>
           </div>
@@ -218,8 +218,8 @@ export default function Component() {
                       </div>
                     </div>
                     <p className="mt-4 text-sm md:text-base text-muted-foreground">
-                      "I'm amazed at how easy it is to make a difference. Patronix has made donating to important causes
-                      simple and transparent."
+                      &quot;I&apos;m amazed at how easy it is to make a difference. Patronix has made donating to important causes
+                      simple and transparent.&quot;
                     </p>
                   </CardContent>
                 </Card>

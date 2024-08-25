@@ -182,7 +182,7 @@ export default function Component() {
 								<>
 									<p>{user.bio}</p>
 									<p className="mt-4">
-										You've been a member of our platform since {user.joinedDate} and have created {user.campaignsCount} campaigns to date.
+										You&apos;ve been a member of our platform since {user.joinedDate} and have created {user.campaignsCount} campaigns to date.
 										Your dedication to social causes and ability to mobilize supporters have made a significant impact in various areas,
 										from environmental conservation to education and community support.
 									</p>
