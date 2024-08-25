@@ -6,6 +6,17 @@ import { Users, Heart } from "lucide-react"
 import Image from "next/image"
 import { MiniKit, tokenToDecimals, Tokens, PayCommandInput, ResponseEvent, MiniAppPaymentPayload } from '@worldcoin/minikit-js'
 import { useEffect } from "react"
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 export default function Campaign() {
 	useEffect(() => {
@@ -44,7 +55,7 @@ export default function Campaign() {
 
 		const payload: PayCommandInput = {
 			reference: id,
-			to: "0x7192165f1D0B68a8f6a6D97F3F66e2652fceA35B", // Test address
+			to: "0xca82d27188ebf3f81fc253e958614564e8dd2cdd", // Test address
 			tokens: [
 				{
 					symbol: Tokens.WLD,
@@ -70,7 +81,7 @@ export default function Campaign() {
 					alt="Jason"
 					className="rounded-full mx-auto mb-4"
 					height="120"
-					src="/placeholder.svg?height=120&width=120"
+					src="/images/jason.jpg"
 					style={{
 						aspectRatio: "120/120",
 						objectFit: "cover",
@@ -132,9 +143,9 @@ export default function Campaign() {
 			<div className="space-y-6 mb-12">
 				<h3 className="text-2xl font-bold text-center">Choose Your Support Level</h3>
 				{[
-					{ name: "Friend", amount: 25, perks: ["Personal thank you note", "Recovery journey updates"] },
-					{ name: "Supporter", amount: 100, perks: ["All Friend perks", "Name on support wall", "Exclusive recovery milestone videos"] },
-					{ name: "Champion", amount: 500, perks: ["All Supporter perks", "Personal video call with Jason", "Invitation to recovery celebration event"] }
+					{ name: "Friend", amount: 2, perks: ["Personal thank you note", "Recovery journey updates"] },
+					{ name: "Supporter", amount: 3, perks: ["All Friend perks", "Name on support wall", "Exclusive recovery milestone videos"] },
+					{ name: "Champion", amount: 5, perks: ["All Supporter perks", "Personal video call with Jason", "Invitation to recovery celebration event"] }
 				].map((tier, index) => (
 					<Card key={tier.name}>
 						<CardHeader>
@@ -149,7 +160,7 @@ export default function Campaign() {
 							</ul>
 						</CardContent>
 						<CardFooter>
-							<Button className="w-full">Donate ${tier.amount}</Button>
+							<Button onClick={sendPayment} className="w-full">Donate ${tier.amount}</Button>
 						</CardFooter>
 					</Card>
 				))}
@@ -158,7 +169,15 @@ export default function Campaign() {
 			{/* Custom Donation */}
 			<div className="text-center mb-12">
 				<h3 className="text-xl font-semibold mb-4">Custom Donation</h3>
-				<Button variant="outline" className="w-full sm:w-auto">Choose Your Amount</Button>
+				<div className="flex flex-col justify-start items-start gap-4">
+					<Label htmlFor="amount" className="text-right">
+						Amount
+					</Label>
+					<Input id="amount" className="col-span-3" />
+					<Button className="w-full" onClick={sendPayment}>
+						Donate Now
+					</Button>
+				</div>
 			</div>
 
 			{/* Recovery Updates */}
@@ -178,7 +197,7 @@ export default function Campaign() {
 								alt={milestone}
 								className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
 								height="300"
-								src={`/placeholder.svg?height=300&width=300&text=${encodeURIComponent(milestone)}`}
+								src={`/images/jason1.jpg`}
 								style={{
 									aspectRatio: "300/300",
 									objectFit: "cover",

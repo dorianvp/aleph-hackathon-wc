@@ -24,7 +24,7 @@ const FormSchema = z.object({
 })
 
 export default function NewUser() {
-	const { user } = useUser()
+	// const { user } = useUser()
 	const router = useRouter();
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -35,10 +35,10 @@ export default function NewUser() {
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		// if (await validUsername(data.username)) {
-		if (user) {
-			await createUser(data.username, user.sub as string)
-			router.push('/profile');
-		}
+		// if (user) {
+		// await createUser(data.username, user.sub as string)
+		router.push('/profile');
+		// }
 		// }
 	}
 

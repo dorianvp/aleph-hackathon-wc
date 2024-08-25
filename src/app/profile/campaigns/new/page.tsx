@@ -10,8 +10,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { PlusCircle, Trash2 } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useRouter } from 'next/navigation'
 
 export default function Component() {
+	const router = useRouter();
 	const [campaign, setCampaign] = useState({
 		name: '',
 		description: '',
@@ -87,7 +89,7 @@ export default function Component() {
 			goal: campaign.goal ? parseInt(campaign.goal) : null
 		}
 		console.log('Campaign data:', submissionData)
-		// Here you would typically send the data to your backend
+		router.push('/profile/campaigns/jason')
 	}
 
 	return (
@@ -218,7 +220,7 @@ export default function Component() {
 						type="number"
 						value={campaign.goal}
 						onChange={handleGoalChange}
-						placeholder={`Recommended (${campaign.currency})`}
+						placeholder={`Recommended (in ${campaign.currency})`}
 						min="1"
 						step="1"
 					/>

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CalendarDays, Heart, Users } from "lucide-react"
+import Link from "next/link"
 
 export default function Component() {
 	const user = {
@@ -20,8 +21,8 @@ export default function Component() {
 	const campaigns = [
 		{
 			id: 1,
-			title: "Clean Water for All",
-			description: "Providing clean water to underprivileged communities",
+			title: "Jason's Journey to Recovery",
+			description: "Jason suffered a severe accident and spinal injury. He's now on a tough road to recovery, needing urgent support for therapy and surgeries.",
 			raised: 15000,
 			goal: 20000,
 			supporters: 230,
@@ -87,24 +88,26 @@ export default function Component() {
 					<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{campaigns.map((campaign) => (
 							<Card key={campaign.id}>
-								<CardHeader>
-									<CardTitle>{campaign.title}</CardTitle>
-									<CardDescription>{campaign.description}</CardDescription>
-								</CardHeader>
-								<CardContent>
-									<Progress value={(campaign.raised / campaign.goal) * 100} className="mb-2" />
-									<div className="flex justify-between text-sm text-muted-foreground">
-										<span>${campaign.raised.toLocaleString()} raised</span>
-										<span>${campaign.goal.toLocaleString()} goal</span>
-									</div>
-								</CardContent>
-								<CardFooter className="flex justify-between">
-									<div className="flex items-center gap-2">
-										<Users className="w-4 h-4" />
-										<span>{campaign.supporters} supporters</span>
-									</div>
-									<Badge variant="secondary">{campaign.daysLeft} days left</Badge>
-								</CardFooter>
+								<Link href={`/campaigns/${campaign.id}`}>
+									<CardHeader>
+										<CardTitle>{campaign.title}</CardTitle>
+										<CardDescription>{campaign.description}</CardDescription>
+									</CardHeader>
+									<CardContent>
+										<Progress value={(campaign.raised / campaign.goal) * 100} className="mb-2" />
+										<div className="flex justify-between text-sm text-muted-foreground">
+											<span>${campaign.raised.toLocaleString()} raised</span>
+											<span>${campaign.goal.toLocaleString()} goal</span>
+										</div>
+									</CardContent>
+									<CardFooter className="flex justify-between">
+										<div className="flex items-center gap-2">
+											<Users className="w-4 h-4" />
+											<span>{campaign.supporters} supporters</span>
+										</div>
+										<Badge variant="secondary">{campaign.daysLeft} days left</Badge>
+									</CardFooter>
+								</Link>
 							</Card>
 						))}
 					</div>
