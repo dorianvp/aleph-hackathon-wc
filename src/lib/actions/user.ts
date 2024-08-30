@@ -2,27 +2,14 @@
 import { sql } from "@vercel/postgres";
 import { getManagementApiToken } from "./auth";
 
-export async function getUserData(sub: string) {
-	const managementApiToken = await getManagementApiToken();
+export async function getUserData(nullifierHash: string) {
+	const dbUser = await sql`SELECT * FROM Users WHERE nullifier_hash = ${nullifierHash}`;
+	console.log('dbUser', dbUser);
 
-	console.log("sub", sub);
-
-	const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${sub}`, {
-		headers: {
-			'Authorization': `Bearer ${managementApiToken}`
-		}
-	});
-
-
-	if (!response.ok) {
-		throw new Error(response.statusText)
-	}
-	const user = await response.json();
-	const dbUser = await sql`SELECT * FROM Users WHERE sub = ${sub}`;
-
+	if (dbUser.rowCount === 0) return null;
 	return {
-		...user,
-		username: dbUser.rows.length > 0 ? dbUser.rows[0].username : ""
+		username: dbUser.rows[0].username,
+		address: dbUser.rows[0].address
 	}
 }
 
@@ -43,4 +30,15 @@ export async function getUsers(): Promise<any> {
 	});
 	const users = await response.json();
 	return users;
+}
+
+export async function getUserFromSub(sub: string) {
+	const managementApiToken = await getManagementApiToken();
+	const response = await fetch('https://id.worldcoin.org/v1/userinfo', {
+		headers: {
+			'Authorization': `Bearer ${managementApiToken}`
+		}
+	});
+	console.log("data", response.body);
+
 }

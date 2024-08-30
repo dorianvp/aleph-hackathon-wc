@@ -1,4 +1,7 @@
+import { MiniKit } from "@worldcoin/minikit-js";
 import NextAuth, { NextAuthOptions } from "next-auth";
+import { cookies } from "next/headers";
+import { NextRequest } from "next/server";
 
 const authOptions: NextAuthOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
@@ -11,9 +14,13 @@ const authOptions: NextAuthOptions = {
 			wellKnown: "https://id.worldcoin.org/.well-known/openid-configuration",
 			authorization: { params: { scope: "openid" } },
 			clientId: process.env.WORLDCOIN_CLIENT_ID,
-			clientSecret: process.env.WORLDCOIN_CLIENTSECRET,
+			clientSecret: process.env.WORLDCOIN_SECRET,
 			idToken: true,
-			checks: ["state", "nonce", "pkce"],
+			checks: [
+				"state",
+				"nonce",
+				"pkce"
+			],
 			profile(profile) {
 				return {
 					id: profile.sub,
@@ -26,6 +33,8 @@ const authOptions: NextAuthOptions = {
 	],
 	callbacks: {
 		async signIn({ user }) {
+			console.log("USER", user);
+
 			return true;
 		},
 	},

@@ -2,16 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+
 import { z } from "zod"
-import {
-	Form,
-	FormLabel,
-} from "@/components/ui/form"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession, signIn } from "next-auth/react";
+import { useEffect } from "react";
+import { getUserData } from "@/lib/actions/user";
 
 const FormSchema = z.object({
 	username: z.string().min(2, {
@@ -20,8 +17,25 @@ const FormSchema = z.object({
 })
 
 export default function NewUser() {
-	const { data: user } = useSession();
+	const { data } = useSession();
 	const router = useRouter();
+
+	useEffect(() => {
+		// fetch user info
+		console.log(data);
+
+		if (data?.user?.name) {
+			getUserData(data.user.name as string).then((data) => {
+				console.log("DATA", data);
+
+				if (!data?.username) {
+					router.push('/signup/new-user');
+				} else {
+					router.push('/');
+				}
+			})
+		}
+	}, [data, router])
 
 	return (
 		<section className="grid min-h-screen place-items-center">
@@ -42,7 +56,7 @@ export default function NewUser() {
 					</CardHeader>
 					<CardContent className="grid gap-4">
 						<Button className="w-full" onClick={() => {
-							// signIn()
+							signIn()
 							router.push('/signup/new-user');
 						}}>
 							Sign in with WorldID

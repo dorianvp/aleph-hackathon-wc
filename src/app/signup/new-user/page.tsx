@@ -12,10 +12,13 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
+	FormMessage,
 } from "@/components/ui/form"
 import { createUser } from "@/lib/actions/auth";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
+import { getSession, useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { getUserFromSub } from "@/lib/actions/user";
 
 const FormSchema = z.object({
 	username: z.string().min(2, {
@@ -24,31 +27,36 @@ const FormSchema = z.object({
 })
 
 export default function NewUser() {
-	// const { user } = useUser()
+
+
+	const session = useSession();
 	const router = useRouter();
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			username: "",
+			username: ""
 		},
 	})
+	useEffect(() => {
+		console.log("session", session);
+	}, [session])
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
-		// if (await validUsername(data.username)) {
-		// if (user) {
-		// await createUser(data.username, user.sub as string)
-		router.push('/profile');
-		// }
-		// }
+		console.log(session);
+
+		try {
+			await createUser(session.data?.user?.name as `0x${string}`, data.username)
+			router.push('/');
+		} catch (err) {
+			console.log(err);
+		}
 	}
 
 	return (
 		<section className="grid min-h-screen place-items-center">
 			<Form  {...form}>
 				<Card>
-
 					<form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-sm">
-
 						<CardHeader>
 							<CardTitle className="text-2xl">Claim your username</CardTitle>
 							<CardDescription>
@@ -60,23 +68,21 @@ export default function NewUser() {
 								control={form.control}
 								name="username"
 								render={({ field }) => (
-
 									<FormItem>
-
 										<div className="grid gap-2">
 											<FormLabel htmlFor="password">Username/alias</FormLabel>
 											<FormControl>
-
 												<Input id="username" type="text" placeholder="yourusername" required {...field} />
 											</FormControl>
+											<FormMessage />
 										</div>
+
 									</FormItem>
 								)}
 							/>
 							<Button className="w-full" type="submit">
 								Sign in
 							</Button>
-
 						</CardContent>
 					</form>
 				</Card>

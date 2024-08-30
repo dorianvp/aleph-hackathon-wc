@@ -1,12 +1,15 @@
+import { SignOutButton } from "@/components/signout-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { NavBar } from "@/components/ui/navbar/navbar"
 import { Progress } from "@/components/ui/progress"
 import { Search, ArrowRight, Gift, Users, BarChart, Menu } from "lucide-react"
+import { signOut } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 
-export default function Component() {
+export default function Main() {
   const featuredCampaign = {
     id: 0,
     title: "Emergency Relief: Earthquake Victims",
@@ -45,27 +48,7 @@ export default function Component() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link className="flex items-center justify-center" href="#" aria-label="GiveHope Home">
-          <span className="text-xl md:text-2xl font-bold text-primary">Patronix</span>
-        </Link>
-        <nav className="ml-auto flex items-center gap-4 sm:gap-6">
-          <div className="flex items-center gap-4 sm:gap-6">
-            <Link className="text-sm font-medium hover:underline underline-offset-4" href={"/campaigns"}>
-              Campaigns
-            </Link>
-          </div>
-          <Button className="flex" variant="outline" size="sm" asChild>
-            <Link href={"/signup"}>
-              Sign Up / Log In
-            </Link>
-          </Button>
-          <Button className="hidden" variant="ghost" size="icon">
-            <Menu className="h-6 w-6" />
-            <span className="sr-only">Toggle menu</span>
-          </Button>
-        </nav>
-      </header>
+      <NavBar />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-secondary/10">
           <div className="container px-4 md:px-6">

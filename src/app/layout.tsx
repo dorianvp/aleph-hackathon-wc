@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { UserProvider } from '@auth0/nextjs-auth0/client';
 import "./globals.css";
 import MiniKitProvider from "@/lib/providers/minikit-provider";
 import NextAuthProvider from "@/lib/providers/next-auth-provider";
+import dynamic from "next/dynamic";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,14 +18,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
+  const ErudaProvider = dynamic(
+    () => import("../lib/providers/Eruda").then((c) => c.ErudaProvider),
+    {
+      ssr: false,
+    }
+  );
+
   return (
     <html lang="en">
       <NextAuthProvider>
-        <MiniKitProvider>
-          <UserProvider>
+        <ErudaProvider>
+          <MiniKitProvider>
             <body className={inter.className}>{children}</body>
-          </UserProvider>
-        </MiniKitProvider>
+          </MiniKitProvider>
+        </ErudaProvider>
       </NextAuthProvider>
     </html>
   );

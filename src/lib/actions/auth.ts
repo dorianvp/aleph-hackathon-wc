@@ -12,32 +12,16 @@ export async function validUsername(username: string): Promise<boolean> {
 	return true
 }
 
-export async function createUser(username: string, sub: string) {
-	console.log("HELL YEAH");
-	const managementApiToken = await getManagementApiToken();
-
-	const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${sub}`, {
-		method: 'PATCH',
-		headers: {
-			'Authorization': `Bearer ${managementApiToken}`,
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			user_metadata: {
-				username: username
-			}
-		})
-	});
-	console.log('response', response);
-
-
-	const r = await sql`INSERT INTO Users (username, sub) VALUES (${username}, ${sub})`;
+export async function createUser(nullifierHash: `0x${string}`, username: string) {
+	const r = await sql`INSERT INTO Users (nullifier_hash, username) VALUES (${nullifierHash}, ${username})`;
 	console.log('r', r);
-	if (!response.ok) {
-		throw new Error(response.statusText)
+	if (!r) {
+		throw new Error("Failed to create user")
 	}
-	const user = await response.json();
-	return user
+	return {
+		nullifierHash,
+		username
+	}
 }
 
 export async function getManagementApiToken() {
