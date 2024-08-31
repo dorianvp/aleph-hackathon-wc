@@ -2,37 +2,33 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { z } from "zod"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession, signIn } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUserData } from "@/lib/actions/user";
-
-const FormSchema = z.object({
-	username: z.string().min(2, {
-		message: "Username must be at least 2 characters.",
-	}),
-})
+import { helix } from "ldrs"
+helix.register()
 
 export default function NewUser() {
 	const { data } = useSession();
 	const router = useRouter();
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		// fetch user info
-		console.log(data);
+		console.log("Loading", loading);
 
+	}, [loading])
+
+	useEffect(() => {
 		if (data?.user?.name) {
 			getUserData(data.user.name as string).then((data) => {
-				console.log("DATA", data);
-
 				if (!data?.username) {
-					router.push('/signup/new-user');
+					router.push('/signup/new-user')
 				} else {
 					router.push('/');
 				}
+				setLoading(false);
 			})
 		}
 	}, [data, router])
@@ -40,7 +36,7 @@ export default function NewUser() {
 	return (
 		<section className="grid min-h-screen place-items-center">
 			<Card>
-				<div className="w-full max-w-sm">
+				<div className="w-full max-w-sm flex flex-col justify-center items-center">
 					<CardHeader className="justify-center items-center">
 						<CardTitle className="text-2xl">Connect with Worldcoin</CardTitle>
 						<CardDescription>
@@ -55,16 +51,23 @@ export default function NewUser() {
 						></Image>
 					</CardHeader>
 					<CardContent className="grid gap-4">
-						<Button className="w-full" onClick={() => {
-							signIn()
-							router.push('/signup/new-user');
-						}}>
-							Sign in with WorldID
-						</Button>
+						{
+							loading ? (
+								<l-helix />
+							) : (
+								<Button className="w-full" onClick={() => {
+									signIn()
+									router.push('/signup/new-user');
+								}}>
+									Sign in with WorldID
+								</Button>
+							)
+						}
 
 					</CardContent>
 				</div>
 			</Card>
+
 		</section >
 	)
 }
