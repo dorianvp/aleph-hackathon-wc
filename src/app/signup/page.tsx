@@ -13,22 +13,16 @@ helix.register()
 export default function NewUser() {
 	const { data } = useSession();
 	const router = useRouter();
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		console.log("Loading", loading);
-
-	}, [loading])
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (data?.user?.name) {
-			getUserData(data.user.name as string).then((data) => {
-				if (!data?.username) {
-					router.push('/signup/new-user')
-				} else {
+			getUserData(data.user.name as string).then((userData) => {
+				if (userData?.username) {
 					router.push('/');
+				} else {
+					router.push('/signup/new-user');
 				}
-				setLoading(false);
 			})
 		}
 	}, [data, router])
@@ -52,18 +46,17 @@ export default function NewUser() {
 					</CardHeader>
 					<CardContent className="grid gap-4">
 						{
-							loading ? (
+							data?.user || loading ? (
 								<l-helix />
 							) : (
 								<Button className="w-full" onClick={() => {
-									signIn()
-									router.push('/signup/new-user');
+									setLoading(true);
+									signIn();
 								}}>
 									Sign in with WorldID
 								</Button>
 							)
 						}
-
 					</CardContent>
 				</div>
 			</Card>

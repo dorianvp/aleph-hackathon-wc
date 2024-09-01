@@ -16,9 +16,8 @@ import {
 } from "@/components/ui/form"
 import { createUser } from "@/lib/actions/auth";
 import { useRouter } from "next/navigation";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { getUserFromSub } from "@/lib/actions/user";
 
 const FormSchema = z.object({
 	username: z.string().min(2, {
@@ -27,8 +26,6 @@ const FormSchema = z.object({
 })
 
 export default function NewUser() {
-
-
 	const session = useSession();
 	const router = useRouter();
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -37,13 +34,8 @@ export default function NewUser() {
 			username: ""
 		},
 	})
-	useEffect(() => {
-		console.log("session", session);
-	}, [session])
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
-		console.log(session);
-
 		try {
 			await createUser(session.data?.user?.name as `0x${string}`, data.username)
 			router.push('/');

@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { Button } from "../button";
 import { SignOutButton } from "@/components/signout-button";
-import { useSession } from "next-auth/react";
-import { Menu } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import { LogOut, Menu, Settings, User } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../dropdown-menu";
 
 export function NavBar() {
 	const { status } = useSession();
@@ -21,9 +22,35 @@ export function NavBar() {
 				</div>
 				{
 					status === "authenticated" ? (
-						<SignOutButton>
-							Sign Out
-						</SignOutButton>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost" size="icon" className="rounded-full outline-none">
+									<User className="h-5 w-5" />
+									<span className="sr-only">User menu</span>
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<DropdownMenuLabel>My Account</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+								<Link href={"/profile"}>
+									<DropdownMenuItem>
+										<User className="mr-2 h-4 w-4" />
+										<span>Profile</span>
+									</DropdownMenuItem>
+								</Link>
+								<DropdownMenuItem>
+									<Settings className="mr-2 h-4 w-4" />
+									<span>Settings</span>
+								</DropdownMenuItem>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem onClick={() => {
+									signOut()
+								}}>
+									<LogOut className="mr-2 h-4 w-4" />
+									<span>Log out</span>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
 					) : (
 						<Button className="flex" variant="outline" size="sm" asChild>
 							<Link href={"/signup"}>
