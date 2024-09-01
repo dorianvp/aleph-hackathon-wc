@@ -7,13 +7,19 @@ import Image from "next/image";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getUserData } from "@/lib/actions/user";
-import { helix } from "ldrs"
-helix.register()
 
 export default function NewUser() {
 	const { data } = useSession();
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		async function getLoader() {
+			const { helix } = await import('ldrs')
+			helix.register()
+		}
+		getLoader()
+	}, [])
 
 	useEffect(() => {
 		if (data?.user?.name) {
