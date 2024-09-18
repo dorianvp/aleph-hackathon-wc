@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import Image from "next/image";
 import { getCampaign, CampaignWithCreator } from "@/lib/actions/campaign";
 import { Button } from "@/components/ui/button";
