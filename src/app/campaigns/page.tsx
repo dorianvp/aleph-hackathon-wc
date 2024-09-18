@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,6 +25,7 @@ const CAMPAIGN_IMAGES = [
 ];
 
 export default async function Campaigns() {
+  noStore();
   const fetchedCampaigns = await getCampaigns();
   console.log("Fetched campaigns:", fetchedCampaigns);
 
